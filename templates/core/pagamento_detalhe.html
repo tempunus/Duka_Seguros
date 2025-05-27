@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Detalhes do Pagamento</h2>
+
+<ul class="list-group">
+    <li class="list-group-item"><strong>Apólice:</strong> {{ pagamento.apolice.numero }}</li>
+    <li class="list-group-item"><strong>Cliente:</strong> {{ pagamento.apolice.cliente.nome }}</li>
+    <li class="list-group-item"><strong>Valor:</strong> R$ {{ pagamento.valor }}</li>
+    <li class="list-group-item"><strong>Data de Vencimento:</strong> {{ pagamento.data_vencimento|date:"d/m/Y" }}</li>
+    <li class="list-group-item"><strong>Status:</strong> {{ pagamento.status }}</li>
+</ul>
+
+<div class="mt-3">
+    <a href="{% url 'pagamento_editar' pagamento.pk %}" class="btn btn-warning">Editar</a>
+    <a href="{% url 'pagamento_excluir' pagamento.pk %}" class="btn btn-danger">Excluir</a>
+    <a href="{% url 'pagamento_lista' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock %}

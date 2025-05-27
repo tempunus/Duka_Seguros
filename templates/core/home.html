@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - Duka Seguros{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center py-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-primary">Bem-vindo à Duka Seguros</h1>
+            <p class="lead">Soluções completas em seguros para sua tranquilidade e segurança.</p>
+            <p class="mb-4">A Duka Seguros oferece os melhores serviços para corretores de seguros, com um sistema completo de gerenciamento de clientes, apólices e muito mais.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg px-4 me-md-2">Acessar Dashboard</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4 me-md-2">Entrar</a>
+                <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-lg px-4">Registrar</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+            <img src="static\images\Logo_Duka.png" alt="Duka Seguros" class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row g-4 py-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Nossos Serviços</h2>
+            <p class="lead">Conheça as soluções que oferecemos para sua corretora</p>
+        </div>
+        <div class="container py-5">
+            <div class="row justify-content-center g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center py-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto"
+                                style="width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                            <h3 class="card-title">
+                                <a class="nav-link" href="{% url 'cliente_lista' %}">Gestão de Clientes</a>
+                            </h3>
+                            <p class="card-text">Cadastre e gerencie seus clientes de forma simples e eficiente.</p>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center py-4">
+                            <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto"
+                                style="width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-file-contract fa-2x"></i>
+                            </div>
+                            <h3 class="card-title">
+                                <a class="nav-link" href="{% url 'apolice_lista' %}">Controle de Apólices</a>
+                            </h3>
+                            <p class="card-text">Acompanhe todas as apólices e seus vencimentos em um só lugar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+{% endblock %}

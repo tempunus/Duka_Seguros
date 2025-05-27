@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Apólice - Duka Seguradora{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">Detalhes da Apólice</h1>
+        <div>
+            <a href="{% url 'apolice_editar' apolice.id %}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Editar
+            </a>
+            <a href="{% url 'apolice_lista' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Informações do Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Nome:</div>
+                        <div class="col-md-9">{{ apolice.cliente.nome }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Tipo:</div>
+                        <div class="col-md-9">{{ apolice.cliente.get_tipo_display }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Documento:</div>
+                        <div class="col-md-9">{{ apolice.cliente.documento }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Data de Nascimento:</div>
+                        <div class="col-md-9">{{ apolice.cliente.data_nascimento|date:"d/m/Y"|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Email:</div>
+                        <div class="col-md-9">{{ apolice.cliente.email|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Telefone:</div>
+                        <div class="col-md-9">{{ apolice.cliente.telefone|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Endereço:</div>
+                        <div class="col-md-9">{{ apolice.cliente.endereco|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Cidade:</div>
+                        <div class="col-md-9">{{ apolice.cliente.cidade|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Estado:</div>
+                        <div class="col-md-9">{{ apolice.cliente.estado|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">CEP:</div>
+                        <div class="col-md-9">{{ apolice.cliente.cep|default:"-" }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Informações da Apólice</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Número:</div>
+                        <div class="col-md-9">{{ apolice.numero }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Produto:</div>
+                        <div class="col-md-9">{{ apolice.produto.nome }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Seguradora:</div>
+                        <div class="col-md-9">{{ apolice.produto.seguradora.nome }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Início da Vigência:</div>
+                        <div class="col-md-9">{{ apolice.data_inicio|date:"d/m/Y" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Fim da Vigência:</div>
+                        <div class="col-md-9">{{ apolice.data_fim|date:"d/m/Y" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Status:</div>
+                        <div class="col-md-9">
+                            {% if apolice.esta_ativa %}
+                                <span class="badge bg-success">Ativa</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inativa</span>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Data de Cadastro:</div>
+                        <div class="col-md-9">{{ apolice.data_cadastro|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Última Atualização:</div>
+                        <div class="col-md-9">{{ apolice.data_atualizacao|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Cadastrado por:</div>
+                        <div class="col-md-9">{{ apolice.cadastrado_por.username|default:"Sistema" }}</div>
+                    </div>
+                    {% if apolice.observacoes %}
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Observações:</div>
+                        <div class="col-md-9">{{ apolice.observacoes|linebreaks }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Outras Apólices do Cliente</h5>
+                </div>
+                <div class="card-body">
+                    {% with outras_apolices=apolice.cliente.apolice_set.all %}
+                    {% if outras_apolices|length > 1 %}
+                    <div class="list-group">
+                        {% for apolice_relacionada in outras_apolices %}
+                        {% if apolice_relacionada.id != apolice.id %}
+                        <a href="{% url 'apolice_detalhe' apolice_relacionada.id %}"
+                            class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ apolice_relacionada.numero }}</h6>
+                                <small class="text-muted">
+                                    {% if apolice_relacionada.ativo %}
+                                    Ativa
+                                    {% else %}
+                                    Inativa
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <p class="mb-1">{{ apolice_relacionada.produto.nome }}</p>
+                            <small>Vigência: {{ apolice_relacionada.data_inicio|date:"d/m/Y" }} a {{
+                                apolice_relacionada.data_fim|date:"d/m/Y" }}</small>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
+                        <p>Este cliente não possui outras apólices.</p>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'apolice_nova' %}?cliente={{ apolice.cliente.id }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Nova Apólice
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

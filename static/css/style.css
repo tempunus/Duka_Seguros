@@ -1,0 +1,155 @@
+/* Estilos personalizados para a Duka Seguradora */
+
+:root {
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --info-color: #0dcaf0;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+}
+
+/* Estilos gerais */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+/* Navbar personalizada */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Cards com sombra suave */
+.card {
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões com efeito hover */
+.btn {
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ícones de feature */
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.dashboard-card .card-body {
+  padding: 1.5rem;
+}
+
+/* Tabelas */
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Formulários */
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-color);
+  color: white;
+  padding: 3rem 0;
+}
+
+footer a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+}
+
+/* Animações */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+

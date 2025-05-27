@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Relatório de Consórcios</h3>
+
+    <h5 class="mt-4">Por Corretor</h5>
+    <ul>
+        {% for item in por_corretor %}
+        <li>{{ item.corretor__nome }}: {{ item.total }}</li>
+        {% endfor %}
+    </ul>
+
+    <h5 class="mt-4">Por Status</h5>
+    <ul>
+        {% for item in por_status %}
+        <li>{{ item.status|capfirst }}: {{ item.total }}</li>
+        {% endfor %}
+    </ul>
+
+    <h5 class="mt-4">Por Produto</h5>
+    <ul>
+        {% for item in por_produto %}
+        <li>{{ item.produto__nome }}: {{ item.total }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

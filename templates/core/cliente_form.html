@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Novo Cliente - Duka Seguradora{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm mt-4 mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Novo Cliente</h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Exibir total de clientes -->
+                    <p class="text-muted">Total de clientes cadastrados: <strong>{{ total_clientes }}</strong></p>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                {{ form.tipo|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.documento|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                {{ form.nome|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.telefone|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                {{ form.endereco|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                {{ form.cidade|as_crispy_field }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form.estado|as_crispy_field }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ form.cep|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                {{ form.data_nascimento|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.ativo|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                {{ form.observacoes|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'cliente_lista' %}" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-times me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Salvar Cliente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

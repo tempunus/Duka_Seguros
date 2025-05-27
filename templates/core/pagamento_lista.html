@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Lista de Pagamentos</h2>
+
+<form method="get" class="mb-3">
+    <input type="text" name="q" placeholder="Buscar por apólice ou cliente" value="{{ request.GET.q }}"
+        class="form-control" />
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Apólice</th>
+            <th>Cliente</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pagamento in pagamentos %}
+        <tr>
+            <td>{{ pagamento.apolice.numero }}</td>
+            <td>{{ pagamento.apolice.cliente.nome }}</td>
+            <td>R$ {{ pagamento.valor }}</td>
+            <td>{{ pagamento.data_vencimento|date:"d/m/Y" }}</td>
+            <td>{{ pagamento.status }}</td>
+            <td>
+                <a href="{% url 'pagamento_detalhe' pagamento.pk %}" class="btn btn-sm btn-primary">Ver</a>
+                <a href="{% url 'pagamento_editar' pagamento.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'pagamento_excluir' pagamento.pk %}" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Nenhum pagamento encontrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    {% if pagamentos.has_previous %}
+    <a href="?page={{ pagamentos.previous_page_number }}">&laquo; Anterior</a>
+    {% endif %}
+
+    <span>Página {{ pagamentos.number }} de {{ pagamentos.paginator.num_pages }}</span>
+
+    {% if pagamentos.has_next %}
+    <a href="?page={{ pagamentos.next_page_number }}">Próxima &raquo;</a>
+    {% endif %}
+</div>
+
+<a href="{% url 'pagamento_novo' %}" class="btn btn-success mt-3">Novo Pagamento</a>
+{% endblock %}

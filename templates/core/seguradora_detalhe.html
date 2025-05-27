@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Seguradora - Duka Seguradora{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">Detalhes da Seguradora</h1>
+        <div>
+            <a href="{% url 'seguradora_editar' seguradora.id %}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Editar
+            </a>
+            <a href="{% url 'seguradora_lista' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Informações da Seguradora</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Nome:</div>
+                        <div class="col-md-9">{{ seguradora.nome }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">CNPJ:</div>
+                        <div class="col-md-9">{{ seguradora.cnpj }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Código:</div>
+                        <div class="col-md-9">{{ seguradora.codigo|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Telefone:</div>
+                        <div class="col-md-9">{{ seguradora.telefone|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Email:</div>
+                        <div class="col-md-9">{{ seguradora.email|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Site:</div>
+                        <div class="col-md-9">
+                            {% if seguradora.site %}
+                            <a href="{{ seguradora.site }}" target="_blank">{{ seguradora.site }}</a>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Status:</div>
+                        <div class="col-md-9">
+                            {% if seguradora.ativo %}
+                            <span class="badge bg-success">Ativa</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inativa</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Data de Cadastro:</div>
+                        <div class="col-md-9">{{ seguradora.data_cadastro|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Última Atualização:</div>
+                        <div class="col-md-9">{{ seguradora.data_atualizacao|date:"d/m/Y H:i" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Produtos</h5>
+                </div>
+                <div class="card-body">
+                    {% if seguradora.produtos.all %}
+                    <div class="list-group">
+                        {% for produto in seguradora.produtos.all %}
+                        <a href="{% url 'produto_detalhe' produto.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ produto.nome }}</h6>
+                                <small class="text-muted">{{ produto.get_categoria_display }}</small>
+                            </div>
+                            <p class="mb-1">{{ produto.codigo|default:"Sem código" }}</p>
+                            {% if produto.ativo %}
+                            <small class="text-success">Ativo</small>
+                            {% else %}
+                            <small class="text-danger">Inativo</small>
+                            {% endif %}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-box fa-3x text-muted mb-3"></i>
+                        <p>Nenhum produto cadastrado para esta seguradora.</p>
+                        <a href="{% url 'produto_novo' %}?seguradora={{ seguradora.id }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i>Novo Produto
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if seguradora.produtos.all %}
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'produto_novo' %}?seguradora={{ seguradora.id }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Novo Produto
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Produtos - Duka Seguradora{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">Produtos</h1>
+        <a href="{% url 'produto_novo' %}" class="btn btn-primary">
+            <i class="fas fa-file-medical me-1"></i>Novo Produto
+        </a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h5 class="mb-0">Lista de Produtos</h5>
+                </div>
+                <div class="col-md-4">
+                    <form method="get" class="d-flex">
+                        <input type="text" name="q" class="form-control" placeholder="Buscar produto..."
+                            value="{{ request.GET.q }}">
+                        <button type="submit" class="btn btn-outline-primary ms-2">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            {% if produtos %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Código</th>
+                            <th>Categoria</th>
+                            <th>Descrição</th>
+                            <th>Seguradora</th>
+                            <th>Ativo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produto in produtos %}
+                        <tr>
+                            <td>{{ produto.nome }}</td>
+                            <td>{{ produto.codigo.nome }}</td>
+                            <td>{{ produto.categoria.nome }}</td>
+                            <td>R$ {{ produto.descricao }}</td>
+                            <td>
+                                {% if produto.ativo == 'ATIVA' %}
+                                <span class="badge bg-success">{{ produto.get_ativo_display }}</span>
+                                {% elif produto.ativo == 'PENDENTE' %}
+                                <span class="badge bg-warning text-dark">{{ produto.get_ativo_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'produto_detalhe' produto.id %}" class="btn btn-sm btn-info"
+                                    data-bs-toggle="tooltip" title="Ver detalhes">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'produto_editar' produto.id %}" class="btn btn-sm btn-warning"
+                                    data-bs-toggle="tooltip" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'produto_excluir' produto.id %}"
+                                    class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-file-contract fa-4x text-muted mb-3"></i>
+                <p class="lead">Nenhum produto cadastrado.</p>
+                <p>Comece adicionando um novo produto clicando no botão acima.</p>
+            </div>
+            {% endif %}
+        </div>
+        {% if produtos.has_other_pages %}
+        <div class="card-footer bg-white">
+            <nav aria-label="Paginação">
+                <ul class="pagination justify-content-center mb-0">
+                    {% if produtos.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                            aria-label="Primeira">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ produtos.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                            aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Primeira">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in produtos.paginator.page_range %}
+                    {% if produtos.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% elif num > produtos.number|add:'-3' and num < produtos.number|add:'3' %} <li class="page-item"><a
+                            class="page-link"
+                            href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if produtos.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ produtos.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                                aria-label="Próxima">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ produtos.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                                aria-label="Última">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Próxima">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Última">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

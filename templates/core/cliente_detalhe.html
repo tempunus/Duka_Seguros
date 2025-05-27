@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Cliente - Duka Seguradora{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">Detalhes do Cliente</h1>
+        <div>
+            <a href="{% url 'cliente_editar' cliente.id %}" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i>Editar
+            </a>
+            <a href="{% url 'cliente_lista' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Informações Pessoais</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Nome:</div>
+                        <div class="col-md-9">{{ cliente.nome }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Tipo:</div>
+                        <div class="col-md-9">{{ cliente.get_tipo_display }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Documento:</div>
+                        <div class="col-md-9">{{ cliente.documento }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Data de Nascimento:</div>
+                        <div class="col-md-9">{{ cliente.data_nascimento|date:"d/m/Y"|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Email:</div>
+                        <div class="col-md-9">{{ cliente.email|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Telefone:</div>
+                        <div class="col-md-9">{{ cliente.telefone|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Endereço:</div>
+                        <div class="col-md-9">{{ cliente.endereco|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Cidade/Estado:</div>
+                        <div class="col-md-9">{{ cliente.cidade|default:"-" }}/{{ cliente.estado|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">CEP:</div>
+                        <div class="col-md-9">{{ cliente.cep|default:"-" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Status:</div>
+                        <div class="col-md-9">
+                            {% if cliente.ativo %}
+                            <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inativo</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Data de Cadastro:</div>
+                        <div class="col-md-9">{{ cliente.data_cadastro|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Última Atualização:</div>
+                        <div class="col-md-9">{{ cliente.data_atualizacao|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Cadastrado por:</div>
+                        <div class="col-md-9">{{ cliente.cadastrado_por.username|default:"Sistema" }}</div>
+                    </div>
+                    {% if cliente.observacoes %}
+                    <div class="row">
+                        <div class="col-md-3 fw-bold">Observações:</div>
+                        <div class="col-md-9">{{ cliente.observacoes|linebreaks }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Apólices</h5>
+                </div>
+                <div class="card-body">
+                    {% if cliente.apolices.all %}
+                    <div class="list-group">
+                        {% for apolice in cliente.apolices.all %}
+                        <a href="{% url 'apolice_detalhe' apolice.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ apolice.numero }}</h6>
+                                <small class="text-muted">{{ apolice.status }}</small>
+                            </div>
+                            <p class="mb-1">{{ apolice.produto.nome }}</p>
+                            <small>Vigência: {{ apolice.data_inicio|date:"d/m/Y" }} a {{ apolice.data_fim|date:"d/m/Y" }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
+                        <p>Nenhuma apólice cadastrada para este cliente.</p>
+                        <a href="{% url 'apolice_nova' %}?cliente={{ cliente.id }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i>Nova Apólice
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if cliente.apolices.all %}
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'apolice_nova' %}?cliente={{ cliente.id }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Nova Apólice
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Consórcios</h5>
+                </div>
+                <div class="card-body">
+                    {% if cliente.consorcios.all %}
+                    <div class="list-group">
+                        {% for consorcio in cliente.consorcios.all %}
+                        <a href="{% url 'consorcio_detalhe' consorcio.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Grupo: {{ consorcio.grupo }}</h6>
+                                <small class="text-muted">{{ consorcio.get_status_display }}</small>
+                            </div>
+                            <p class="mb-1">Tipo: {{ consorcio.get_tipo_display }}</p>
+                            <small>Adesão: {{ consorcio.data_adesao|date:"d/m/Y" }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-hand-holding-usd fa-3x text-muted mb-3"></i>
+                        <p>Nenhum consórcio cadastrado para este cliente.</p>
+                        <a href="{% url 'consorcio_novo' %}?cliente={{ cliente.id }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus me-1"></i>Novo Consórcio
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if cliente.consorcios.all %}
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'consorcio_novo' %}?cliente={{ cliente.id }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus me-1"></i>Novo Consórcio
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>        
+    </div>
+</div>
+{% endblock %}

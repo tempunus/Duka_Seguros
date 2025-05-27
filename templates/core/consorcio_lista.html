@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Consórcios | Duka Seguros{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Consórcios</h1>
+        <a href="{% url 'consorcio_novo' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Novo Consórcio
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            {% if consorcios %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Administradora</th>
+                            <th>Tipo</th>
+                            <th>Valor do Crédito</th>
+                            <th>Status</th>
+                            <th>Data de Adesão</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for consorcio in consorcios %}
+                        <tr>
+                            <td>{{ consorcio.cliente.nome }}</td>
+                            <td>{{ consorcio.administradora }}</td>
+                            <td>{{ consorcio.get_tipo_display }}</td>
+                            <td>R$ {{ consorcio.valor_credito }}</td>
+                            <td>
+                                <span
+                                    class="badge {% if consorcio.status == 'ATIVO' %}bg-success{% elif consorcio.status == 'CONTEMPLADO' %}bg-primary{% elif consorcio.status == 'CANCELADO' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                    {{ consorcio.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ consorcio.data_adesao|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="{% url 'consorcio_detalhe' pk=consorcio.pk %}" class="btn btn-sm btn-info"
+                                    title="Detalhes">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'consorcio_editar' pk=consorcio.pk %}" class="btn btn-sm btn-warning"
+                                    title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'consorcio_excluir' pk=consorcio.pk %}" class="btn btn-sm btn-danger"
+                                    title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Nenhum consórcio cadastrado. <a href="{% url 'consorcio_novo' %}">Cadastrar um novo consórcio</a>.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

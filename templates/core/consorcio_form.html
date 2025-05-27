@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}
+{% if form.instance.pk %}
+Editar Consórcio | Duka Consórcio
+{% else %}
+Novo Consórcio | Duka Consórcio
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            {% if form.instance.pk %}
+            <i class="fas fa-edit text-warning"></i> Editar Consórcio
+            {% else %}
+            <i class="fas fa-plus-circle text-success"></i> Novo Consórcio
+            {% endif %}
+        </h1>
+        <a href="{% url 'consorcio_lista' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Cliente</label>
+                        {{ form.cliente|add_class:"form-select" }}
+                        {{ form.cliente.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Administradora</label>
+                        {{ form.administradora|add_class:"form-control" }}
+                        {{ form.administradora.errors }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo</label>
+                        {{ form.tipo|add_class:"form-select" }}
+                        {{ form.tipo.errors }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Grupo</label>
+                        {{ form.grupo|add_class:"form-control" }}
+                        {{ form.grupo.errors }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Cota</label>
+                        {{ form.cota|add_class:"form-control" }}
+                        {{ form.cota.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Valor do Crédito</label>
+                        {{ form.valor_credito|add_class:"form-control" }}
+                        {{ form.valor_credito.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Valor da Parcela</label>
+                        {{ form.valor_parcela|add_class:"form-control" }}
+                        {{ form.valor_parcela.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Total de Parcelas</label>
+                        {{ form.total_parcelas|add_class:"form-control" }}
+                        {{ form.total_parcelas.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Parcelas Pagas</label>
+                        {{ form.parcelas_pagas|add_class:"form-control" }}
+                        {{ form.parcelas_pagas.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Taxa de Administração (%)</label>
+                        {{ form.taxa_administracao|add_class:"form-control" }}
+                        {{ form.taxa_administracao.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Status</label>
+                        {{ form.status|add_class:"form-select" }}
+                        {{ form.status.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Data de Adesão</label>
+                        {{ form.data_adesao|add_class:"form-control" }}
+                        {{ form.data_adesao.errors }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Data de Contemplação</label>
+                        {{ form.data_contemplacao|add_class:"form-control" }}
+                        {{ form.data_contemplacao.errors }}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Observações</label>
+                        {{ form.observacoes|add_class:"form-control" }}
+                        {{ form.observacoes.errors }}
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i>
+                        {% if form.instance.pk %}
+                        Atualizar
+                        {% else %}
+                        Salvar
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
