@@ -47,11 +47,15 @@ urlpatterns = [
     # URLs para Consorcio
     path('consorcios/', views.consorcio_lista, name='consorcio_lista'),
     path('consorcios/novo/', views.consorcio_novo, name='consorcio_novo'),
-    
     path('consorcios/<int:pk>/', views.consorcio_detalhe, name='consorcio_detalhe'),
-    
     path('consorcios/<int:pk>/editar/', views.consorcio_editar, name='consorcio_editar'),
     path('consorcios/<int:pk>/excluir/', views.consorcio_excluir, name='consorcio_excluir'),
-
+    path('administradora/nova/', views.administradora_nova, name='administradora_nova'),
+    path('administradora/lista/', views.administradora_lista, name='administradora_lista'),
+    path('administradora/<int:pk>/editar/', views.administradora_editar, name='administradora_editar'),
+    path('administradora/<int:pk>/excluir/', views.administradora_excluir, name='administradora_excluir'),
 
 ]
+
+
+

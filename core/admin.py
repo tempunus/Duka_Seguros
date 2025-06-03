@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Consorcio
+from .models import Consorcio, AdministradoraConsorcio
+
+
+
+admin.site.register(AdministradoraConsorcio)
 
 @admin.register(Consorcio)
 class ConsorcioAdmin(admin.ModelAdmin):
@@ -31,3 +35,6 @@ class ConsorcioAdmin(admin.ModelAdmin):
         if not change:  # Se for uma nova instância
             obj.cadastrado_por = request.user
         super().save_model(request, obj, form, change)
+
+
+

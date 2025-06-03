@@ -1,5 +1,7 @@
 from django import forms
-from .models import Cliente, Seguradora, Produto, Apolice, Pagamento, Consorcio
+from .models import Cliente, Seguradora, Produto, Apolice, Pagamento, Consorcio, AdministradoraConsorcio
+import re
+from django.core.exceptions import ValidationError
 
 
 class ClienteForm(forms.ModelForm):
@@ -111,6 +113,10 @@ class PagamentoForm(forms.ModelForm):
 
 
 class ConsorcioForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['administradora'].empty_label = "Selecione uma administradora..."
+
     class Meta:
         model = Consorcio
         fields = [
@@ -120,7 +126,44 @@ class ConsorcioForm(forms.ModelForm):
             'status', 'observacoes'
         ]
         widgets = {
+            'administradora': forms.Select(attrs={'class': 'form-select'}),
             'data_adesao': forms.DateInput(attrs={'type': 'date'}),
             'data_contemplacao': forms.DateInput(attrs={'type': 'date'}),
             'observacoes': forms.Textarea(attrs={'rows': 3}),
         }
+
+
+
+def validar_cnpj(cnpj):
+    # Remove tudo que não for número
+    cnpj = re.sub(r'\D', '', cnpj)
+
+    if len(cnpj) != 14 or cnpj == cnpj[0] * 14:
+        raise ValidationError('CNPJ inválido.')
+
+    # Validação oficial do CNPJ
+    def calcular_digito(cnpj, posicoes):
+        soma = sum(int(cnpj[i]) * pos for i, pos in enumerate(posicoes))
+        resto = soma % 11
+        return '0' if resto < 2 else str(11 - resto)
+
+    primeiro = calcular_digito(cnpj, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+    segundo = calcular_digito(cnpj, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+
+    if cnpj[-2:] != primeiro + segundo:
+        raise ValidationError('CNPJ inválido.')
+
+class AdministradoraConsorcioForm(forms.ModelForm):
+    class Meta:
+        model = AdministradoraConsorcio
+        fields = ['nome', 'cnpj', 'telefone', 'email', 'endereco']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for campo in self.fields.values():
+            campo.widget.attrs['class'] = 'form-control'
+
+    def clean_cnpj(self):
+        cnpj = self.cleaned_data.get('cnpj')
+        validar_cnpj(cnpj)
+        return cnpj

@@ -4,6 +4,16 @@ from django.utils import timezone
 from django import forms
 
 
+class Atividade(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=255)
+    data_hora = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.descricao} ({self.data_hora})"
+
+
+
 class Cliente(models.Model):
     """Modelo para armazenar informações de clientes da corretora"""
     TIPO_CHOICES = [
@@ -203,7 +213,7 @@ class Consorcio(models.Model):
     ]
     
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, related_name='consorcios')
-    administradora = models.CharField(max_length=200)
+    administradora = models.ForeignKey('AdministradoraConsorcio', on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
     grupo = models.CharField(max_length=50, blank=True, null=True)
     cota = models.CharField(max_length=50, blank=True, null=True)
@@ -237,3 +247,15 @@ class Consorcio(models.Model):
         verbose_name = 'Consórcio'
         verbose_name_plural = 'Consórcios'
         ordering = ['-data_adesao']
+
+
+class AdministradoraConsorcio(models.Model):
+    nome = models.CharField(max_length=100)
+    cnpj = models.CharField(max_length=18, unique=True)
+    telefone = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    endereco = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.nome
+

@@ -5,9 +5,16 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import Cliente, Seguradora, Produto, Apolice, Pagamento, Consorcio
-from .forms import ClienteForm, SeguradoraForm, ProdutoForm, ApoliceForm, PagamentoForm, ConsorcioForm
+from .forms import ClienteForm, SeguradoraForm, ProdutoForm, ApoliceForm, PagamentoForm, ConsorcioForm, AdministradoraConsorcioForm, AdministradoraConsorcio
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
+from .models import Atividade
+
+def dashboard(request):
+    atividades = Atividade.objects.filter(usuario=request.user).order_by('-data_hora')[:5]
+    print("Atividades no contexto:", atividades)  # Só para debug
+    return render(request, 'dashboard.html', {'atividades': atividades})
+
 
 def home(request):
     """Página inicial do site"""
@@ -349,3 +356,42 @@ class ConsorcioCreateView(CreateView):
         if self.request.GET.get('cliente'):
             form.fields['cliente'].disabled = True
         return form
+
+
+@login_required
+def administradora_nova(request):
+    if request.method == 'POST':
+        form = AdministradoraConsorcioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Administradora de consórcio cadastrada com sucesso!')
+            return redirect('administradora_lista')
+    else:
+        form = AdministradoraConsorcioForm()
+    return render(request, 'core/administradora_form.html', {'form': form})
+
+def administradora_lista(request):
+    from .models import AdministradoraConsorcio
+    administradoras = AdministradoraConsorcio.objects.all()
+    return render(request, 'core/administradora_lista.html', {'administradoras': administradoras})
+
+def administradora_editar(request, pk):
+    adm = get_object_or_404(AdministradoraConsorcio, pk=pk)
+    if request.method == 'POST':
+        form = AdministradoraConsorcioForm(request.POST, instance=adm)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Administradora atualizada com sucesso!')
+            return redirect('administradora_lista')
+    else:
+        form = AdministradoraConsorcioForm(instance=adm)
+    return render(request, 'core/administradora_form.html', {'form': form, 'editar': True})
+
+
+def administradora_excluir(request, pk):
+    adm = get_object_or_404(AdministradoraConsorcio, pk=pk)
+    if request.method == 'POST':
+        adm.delete()
+        messages.success(request, 'Administradora excluída com sucesso!')
+        return redirect('administradora_lista')
+    return render(request, 'core/administradora_confirm_delete.html', {'adm': adm})
