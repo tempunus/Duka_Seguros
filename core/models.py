@@ -107,12 +107,15 @@ class Produto(models.Model):
 class Apolice(models.Model):
     """Modelo para armazenar informações das apólices de seguro"""
     STATUS_CHOICES = [
-        ('ATIVA', 'Ativa'),
-        ('PENDENTE', 'Pendente'),
-        ('CANCELADA', 'Cancelada'),
-        ('VENCIDA', 'Vencida'),
-        ('RENOVADA', 'Renovada'),
-    ]
+    ('PROPOSTA', 'Proposta'),
+    ('APROVADA', 'Proposta Aprovada'),
+    ('ATIVA', 'Ativa'),
+    ('PENDENTE', 'Pendente'),
+    ('CANCELADA', 'Cancelada'),
+    ('VENCIDA', 'Vencida'),
+    ('RENOVADA', 'Renovada'),
+]
+
     
     numero = models.CharField(max_length=50, unique=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='apolices')
@@ -122,7 +125,7 @@ class Apolice(models.Model):
     valor_premio = models.DecimalField(max_digits=10, decimal_places=2)
     valor_comissao = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     percentual_comissao = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ATIVA')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PROPOSTA')
     observacoes = models.TextField(blank=True, null=True)
     
     # Campos de controle
@@ -187,10 +190,6 @@ class Pagamento(models.Model):
         verbose_name = 'Pagamento'
         verbose_name_plural = 'Pagamentos'
         ordering = ['apolice', 'data_vencimento']
-
-
-
-
 
     
 class Consorcio(models.Model):
