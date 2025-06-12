@@ -1,9 +1,8 @@
-"""
-Django settings for duka_project project.
-"""
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-duka-seguradora-2025-development-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['dukaseguros.onrender.com']
 
@@ -73,6 +72,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,3 +126,7 @@ EMAIL_HOST_USER = 'tempunus@gmail.com'
 EMAIL_HOST_PASSWORD = 'qltt vmds mhbk llcm'
 DEFAULT_FROM_EMAIL = 'Duka Seguros <tempunus@gmail.com>'
 
+ALLOWED_HOSTS = ['*']
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
