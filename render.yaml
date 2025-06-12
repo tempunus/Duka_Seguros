@@ -1,7 +1,13 @@
 services:
   - type: web
-    name: nome-do-seu-app
+    name: dukaSeguros
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn seu_projeto.wsgi:application
-
+    buildCommand: ""
+    startCommand: gunicorn nome_do_projeto.wsgi
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: nome_do_projeto.settings
+      - key: SECRET_KEY
+        value: sua_secret_key
+      - key: DEBUG
+        value: False
