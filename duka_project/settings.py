@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-duka-seguradora-2025-development-key'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['dukaseguros.onrender.com']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 INSTALLED_APPS = [
