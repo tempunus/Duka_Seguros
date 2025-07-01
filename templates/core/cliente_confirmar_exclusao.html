@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Exclusão - Cliente{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="text-danger mb-3">Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja excluir o cliente abaixo?</p>
+            <ul class="list-unstyled">
+                <li><strong>Nome:</strong> {{ cliente.nome }}</li>
+                <li><strong>Documento:</strong> {{ cliente.documento }}</li>
+                <li><strong>Email:</strong> {{ cliente.email }}</li>
+            </ul>
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <a href="{% url 'cliente_lista' %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Confirmar Exclusão - Apólice{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="text-danger mb-3">Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja excluir a seguinte apólice?</p>
+            <ul class="list-unstyled">
+                <li><strong>Número:</strong> {{ apolice.numero }}</li>
+                <li><strong>Cliente:</strong> {{ apolice.cliente.nome }}</li>
+                <li><strong>Produto:</strong> {{ apolice.produto.nome }}</li>
+                <li><strong>Vigência:</strong> {{ apolice.data_inicio|date:"d/m/Y" }} a {{ apolice.data_fim|date:"d/m/Y"
+                    }}</li>
+                <li><strong>Valor:</strong> R$ {{ apolice.valor_premio }}</li>
+            </ul>
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <a href="{% url 'apolice_lista' %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

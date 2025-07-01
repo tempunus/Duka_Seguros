@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-duka-seguradora-2025-development-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
+DEBUG = "True"
+#os.getenv("DEBUG", "False") ==
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'django_bootstrap5',
+    'django_filters',
     # Aplicativos locais
     'core',
     'accounts.apps.AccountsConfig',

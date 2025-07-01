@@ -9,6 +9,9 @@ from .forms import ClienteForm, SeguradoraForm, ProdutoForm, ApoliceForm, Pagame
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from .models import Atividade
+from .models import Apolice
+from .filters import ApoliceFilter
+
 
 def dashboard(request):
     atividades = Atividade.objects.filter(usuario=request.user).order_by('-data_hora')[:5]
@@ -126,22 +129,34 @@ def cliente_excluir(request, pk):
 # Views para Apólice
 @login_required
 def apolice_lista(request):
-    """Lista de apólices"""
+    """Lista de apólices com busca e filtro por data"""
     query = request.GET.get('q', '')
+
+    # Começa com todas as apólices
+    apolices = Apolice.objects.all().order_by('-data_inicio')
+
+    # Filtro de busca textual
     if query:
-        apolices_list = Apolice.objects.filter(
-            Q(numero__icontains=query) | 
+        apolices = apolices.filter(
+            Q(numero__icontains=query) |
             Q(cliente__nome__icontains=query) |
             Q(produto__nome__icontains=query)
-        ).order_by('-data_inicio')
-    else:
-        apolices_list = Apolice.objects.all().order_by('-data_inicio')
-    
-    paginator = Paginator(apolices_list, 10)  # 10 apólices por página
+        )
+
+    # Filtro por data (usando django-filter)
+    filtro = ApoliceFilter(request.GET, queryset=apolices)
+
+    # Paginação
+    paginador = Paginator(filtro.qs, 10)
     page = request.GET.get('page')
-    apolices = paginator.get_page(page)
-    
-    return render(request, 'core/apolice_lista.html', {'apolices': apolices})
+    page_obj = paginador.get_page(page)
+
+    # Renderiza template com contexto
+    return render(request, 'core/apolice_lista.html', {
+        'apolices': page_obj,
+        'filter': filtro,
+    })
+  
 
 @login_required
 def total_apolice_view(request):
@@ -206,13 +221,14 @@ def apolice_editar(request, pk):
 def apolice_excluir(request, pk):
     """Exclusão de apólice"""
     apolice = get_object_or_404(Apolice, pk=pk)
-    
+
     if request.method == 'POST':
         apolice.delete()
         messages.success(request, 'Apólice excluída com sucesso!')
         return redirect('apolice_lista')
-    
+
     return render(request, 'core/apolice_confirmar_exclusao.html', {'apolice': apolice})
+
 
 @login_required
 def apolices_pendentes(request):
