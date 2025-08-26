@@ -15,6 +15,8 @@ DEBUG = "True"
 #os.getenv("DEBUG", "False") ==
 ALLOWED_HOSTS = ['dukaseguros.com', 'www.dukaseguros.com']
 
+CSRF_TRUSTED_ORIGINS = ["https://dukaseguros.com", "https://www.dukaseguros.com"]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
