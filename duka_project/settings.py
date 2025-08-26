@@ -67,9 +67,12 @@ WSGI_APPLICATION = 'duka_project.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dukaseguros_db_jrq5',      
+        'USER': 'admin',             
+        'PASSWORD': 'pZlPYGloETfx3aTbKYwsxuibjfwbZUmq',          
+        'HOST': 'dpg-d2n0p6ggjchc73d708c0-a.oregon-postgres.render.com',          
+        'PORT': '5432',                    
     }
 }
 
