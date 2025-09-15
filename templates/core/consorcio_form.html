@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+<<<<<<< HEAD
 {% load form_tags %}
+=======
+{% load crispy_forms_tags %}
+>>>>>>> b372def (Alterações_Duka)
 
 {% block title %}
 {% if form.instance.pk %}
@@ -36,6 +40,7 @@ Novo Consórcio | Duka Consórcio
 
                 <div class="row g-3">
                     <div class="col-md-6">
+<<<<<<< HEAD
                         <label class="form-label">Cliente</label>
                         {{ form.cliente|add_class:"form-select" }}
                         {{ form.cliente.errors }}
@@ -117,6 +122,61 @@ Novo Consórcio | Duka Consórcio
                         <label class="form-label">Observações</label>
                         {{ form.observacoes|add_class:"form-control" }}
                         {{ form.observacoes.errors }}
+=======
+                        {{ form.cliente|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.administradora|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-4">
+                        {{ form.tipo|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-4">
+                        {{ form.grupo|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-4">
+                        {{ form.cota|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.valor_credito|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.valor_parcela|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.total_parcelas|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.parcelas_pagas|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.taxa_administracao|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.status|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.data_adesao|as_crispy_field }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.data_contemplacao|as_crispy_field }}
+                    </div>
+
+                    <div class="col-12">
+                        {{ form.observacoes|as_crispy_field }}
+>>>>>>> b372def (Alterações_Duka)
                     </div>
                 </div>
 
@@ -134,4 +194,8 @@ Novo Consórcio | Duka Consórcio
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> b372def (Alterações_Duka)

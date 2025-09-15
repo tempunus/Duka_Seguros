@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # Criado por https://www.toptal.com/developers/gitignore/api/python,django
 # Edite em https://www.toptal.com/developers/gitignore?templates=python,django
+=======
+
+>>>>>>> b372def (Alterações_Duka)
 
 ### Django ###
 *.registro
@@ -11,9 +15,12 @@ db.sqlite3
 db.sqlite3-diário
 mídia
 
+<<<<<<< HEAD
 # Se o seu processo de construção inclui a execução de collectstatic, então você provavelmente não precisa ou deseja incluir staticfiles/
 # no seu repositório Git. Atualize e descomente a linha a seguir conforme necessário.
 # <nome-do-projeto-django>/arquivos-estáticos/
+=======
+>>>>>>> b372def (Alterações_Duka)
 
 ### Pilha Django.Python ###
 # Arquivos DLL compilados/otimizados em bytes
@@ -94,6 +101,7 @@ alvo/
 perfil_padrão/
 ipython_config.py
 
+<<<<<<< HEAD
 # pyenv
 # Para uma biblioteca ou pacote, você pode querer ignorar esses arquivos, pois o código é
 # destinado a ser executado em vários ambientes; caso contrário, faça o check-in:
@@ -118,6 +126,8 @@ ipython_config.py
 #pdm.lock
 # pdm armazena configurações de todo o projeto em .pdm.toml, mas é recomendado não incluí-lo
 # no controle de versão.
+=======
+>>>>>>> b372def (Alterações_Duka)
 # https://pdm.fming.dev/#use-with-ide
 .pdm.toml
 
@@ -163,6 +173,7 @@ dmypy.json
 
 # Símbolos de depuração do Cython
 cython_debug/
+<<<<<<< HEAD
 
 # PyCharm
 # O modelo específico do JetBrains é mantido em um JetBrains.gitignore separado que pode
@@ -255,6 +266,9 @@ cython_debug/
 
 ### Patch do Python ###
 # Arquivo de configuração local do Poetry - https://python-poetry.org/docs/configuration/#local-configuration
+=======
+#local-configuration
+>>>>>>> b372def (Alterações_Duka)
 poesia.toml
 
 # ruff
@@ -263,4 +277,16 @@ poesia.toml
 # Arquivos de configuração LSP
 pyrightconfig.json
 
+<<<<<<< HEAD
+=======
+*.pyc
+__pycache__/
+venv/
+*.sqlite3
+*.log
+.env
+staticfiles/
+
+
+>>>>>>> b372def (Alterações_Duka)
 # Fim de https://www.toptal.com/developers/gitignore/api/python,django

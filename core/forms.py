@@ -8,8 +8,15 @@ class ClienteForm(forms.ModelForm):
     """Formulário para cadastro e edição de clientes"""
     class Meta:
         model = Cliente
+<<<<<<< HEAD
         fields = ['tipo', 'nome', 'documento', 'email', 'telefone', 'endereco', 
                   'cidade', 'estado', 'cep', 'data_nascimento', 'observacoes', 'ativo']
+=======
+        fields = [
+            'tipo', 'nome', 'documento', 'email', 'telefone', 'endereco', 
+            'cidade', 'estado', 'cep', 'data_nascimento', 'observacoes', 'ativo'
+        ]
+>>>>>>> b372def (Alterações_Duka)
         widgets = {
             'data_nascimento': forms.DateInput(attrs={'type': 'date'}),
             'observacoes': forms.Textarea(attrs={'rows': 3}),
@@ -29,6 +36,10 @@ class ClienteForm(forms.ModelForm):
             'ativo': 'Cliente Ativo'
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b372def (Alterações_Duka)
 class SeguradoraForm(forms.ModelForm):
     """Formulário para cadastro e edição de seguradoras"""
     class Meta:
@@ -44,6 +55,10 @@ class SeguradoraForm(forms.ModelForm):
             'ativo': 'Seguradora Ativa'
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b372def (Alterações_Duka)
 class ProdutoForm(forms.ModelForm):
     """Formulário para cadastro e edição de produtos"""
     class Meta:
@@ -51,6 +66,10 @@ class ProdutoForm(forms.ModelForm):
         fields = ['nome', 'codigo', 'categoria', 'descricao', 'seguradora', 'ativo']
         widgets = {
             'descricao': forms.Textarea(attrs={'rows': 6}),
+<<<<<<< HEAD
+=======
+            'categoria': forms.Select(attrs={'class': 'form-select'}),
+>>>>>>> b372def (Alterações_Duka)
         }
         labels = {
             'nome': 'Nome do Produto',
@@ -61,14 +80,28 @@ class ProdutoForm(forms.ModelForm):
             'ativo': 'Produto Ativo'
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b372def (Alterações_Duka)
 class ApoliceForm(forms.ModelForm):
     """Formulário para cadastro e edição de apólices"""
     class Meta:
         model = Apolice
+<<<<<<< HEAD
         fields = ['numero', 'cliente', 'produto', 'data_inicio', 'data_fim', 
                   'valor_premio', 'valor_comissao', 'percentual_comissao', 
                   'status', 'observacoes']
         widgets = {
+=======
+        fields = [
+            'numero', 'cliente', 'produto', 'seguradora', 'protocolo',
+            'data_inicio', 'data_fim', 'valor_premio', 'valor_comissao',
+            'percentual_comissao', 'status', 'codigo_ci', 'classificacao_bonus', 'observacoes'
+        ]
+        widgets = {
+            'produto': forms.Select(attrs={'class': 'form-select'}),
+>>>>>>> b372def (Alterações_Duka)
             'data_inicio': forms.DateInput(attrs={'type': 'date'}),
             'data_fim': forms.DateInput(attrs={'type': 'date'}),
             'observacoes': forms.Textarea(attrs={'rows': 6}),
@@ -77,21 +110,42 @@ class ApoliceForm(forms.ModelForm):
             'numero': 'Número da Apólice',
             'cliente': 'Cliente',
             'produto': 'Produto',
+<<<<<<< HEAD
+=======
+            'seguradora': 'Seguradora',
+            'protocolo': 'Protocolo',
+>>>>>>> b372def (Alterações_Duka)
             'data_inicio': 'Data de Início',
             'data_fim': 'Data de Término',
             'valor_premio': 'Valor do Prêmio (R$)',
             'valor_comissao': 'Valor da Comissão (R$)',
             'percentual_comissao': 'Percentual de Comissão (%)',
             'status': 'Status',
+<<<<<<< HEAD
             'observacoes': 'Observações'
         }
 
+=======
+            'codigo_ci': 'Código C.I',
+            'classificacao_bonus': 'Classificação de Bônus',
+            'observacoes': 'Observações'
+        }
+
+
+>>>>>>> b372def (Alterações_Duka)
 class PagamentoForm(forms.ModelForm):
     """Formulário para cadastro e edição de pagamentos"""
     class Meta:
         model = Pagamento
+<<<<<<< HEAD
         fields = ['apolice', 'data_vencimento', 'data_pagamento', 'valor', 
                   'forma_pagamento', 'status', 'parcela', 'total_parcelas', 'observacoes']
+=======
+        fields = [
+            'apolice', 'data_vencimento', 'data_pagamento', 'valor', 
+            'forma_pagamento', 'status', 'parcela', 'total_parcelas', 'observacoes'
+        ]
+>>>>>>> b372def (Alterações_Duka)
         widgets = {
             'data_vencimento': forms.DateInput(attrs={'type': 'date'}),
             'data_pagamento': forms.DateInput(attrs={'type': 'date'}),
@@ -110,8 +164,11 @@ class PagamentoForm(forms.ModelForm):
         }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b372def (Alterações_Duka)
 class ConsorcioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -133,7 +190,10 @@ class ConsorcioForm(forms.ModelForm):
         }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b372def (Alterações_Duka)
 def validar_cnpj(cnpj):
     # Remove tudo que não for número
     cnpj = re.sub(r'\D', '', cnpj)
@@ -153,6 +213,10 @@ def validar_cnpj(cnpj):
     if cnpj[-2:] != primeiro + segundo:
         raise ValidationError('CNPJ inválido.')
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b372def (Alterações_Duka)
 class AdministradoraConsorcioForm(forms.ModelForm):
     class Meta:
         model = AdministradoraConsorcio

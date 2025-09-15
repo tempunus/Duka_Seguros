@@ -15,6 +15,11 @@ DEBUG = "True"
 #os.getenv("DEBUG", "False") ==
 ALLOWED_HOSTS = ['dukaseguros.com', 'www.dukaseguros.com']
 
+<<<<<<< HEAD
+=======
+CSRF_TRUSTED_ORIGINS = ["https://dukaseguros.com", "https://www.dukaseguros.com"]
+
+>>>>>>> b372def (Alterações_Duka)
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -32,6 +37,10 @@ INSTALLED_APPS = [
     # Aplicativos locais
     'core',
     'accounts.apps.AccountsConfig',
+<<<<<<< HEAD
+=======
+    "widget_tweaks",
+>>>>>>> b372def (Alterações_Duka)
 ]
 
 MIDDLEWARE = [
@@ -68,12 +77,24 @@ WSGI_APPLICATION = 'duka_project.wsgi.application'
 # Database
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 
+=======
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dukaseguros_db_jrq5',      
+        'USER': 'admin',             
+        'PASSWORD': 'pZlPYGloETfx3aTbKYwsxuibjfwbZUmq',          
+        'HOST': 'dpg-d2n0p6ggjchc73d708c0-a.oregon-postgres.render.com',          
+        'PORT': '5432',  
+    }
+}
+
+>>>>>>> b372def (Alterações_Duka)
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
