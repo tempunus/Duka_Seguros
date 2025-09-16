@@ -374,3 +374,67 @@ def administradora_excluir(request, pk):
         messages.success(request, 'Administradora excluída com sucesso!')
         return redirect('administradora_lista')
     return render(request, 'core/administradora_confirm_delete.html', {'adm': adm})
+
+
+# -------------------- PRODUTOS --------------------
+@login_required
+def produto_lista(request):
+    query = request.GET.get('q', '')
+    if query:
+        produtos_list = Produto.objects.filter(
+            Q(nome__icontains=query) |
+            Q(codigo__icontains=query) |
+            Q(categoria__icontains=query),
+            ativo=True
+        ).order_by('nome')
+    else:
+        produtos_list = Produto.objects.filter(ativo=True).order_by('nome')
+
+    paginator = Paginator(produtos_list, 10)
+    page = request.GET.get('page')
+    produtos = paginator.get_page(page)
+
+    return render(request, 'core/produto_lista.html', {'produtos': produtos, 'query': query})
+
+
+@login_required
+def produto_detalhe(request, pk):
+    produto = get_object_or_404(Produto, pk=pk)
+    return render(request, 'core/produto_detalhe.html', {'produto': produto})
+
+
+@login_required
+def produto_novo(request):
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST)
+        if form.is_valid():
+            produto = form.save()
+            messages.success(request, 'Produto cadastrado com sucesso!')
+            return redirect('produto_lista')
+    else:
+        form = ProdutoForm()
+    return render(request, 'core/produto_form.html', {'form': form})
+
+
+@login_required
+def produto_editar(request, pk):
+    produto = get_object_or_404(Produto, pk=pk)
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST, instance=produto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Produto atualizado com sucesso!')
+            return redirect('produto_lista')
+    else:
+        form = ProdutoForm(instance=produto)
+    return render(request, 'core/produto_form.html', {'form': form})
+
+
+@login_required
+def produto_excluir(request, pk):
+    produto = get_object_or_404(Produto, pk=pk)
+    if request.method == 'POST':
+        produto.delete()
+        messages.success(request, 'Produto excluído com sucesso!')
+        return redirect('produto_lista')
+    return render(request, 'core/produto_confirmar_exclusao.html', {'produto': produto})
