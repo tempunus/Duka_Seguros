@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<h2>Excluir Seguradora</h2>
+<p>Tem certeza que deseja excluir <strong>{{ seguradora.nome }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+    <a href="{% url 'seguradora_lista' %}">Cancelar</a>
+</form>
+{% endblock %}

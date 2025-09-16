@@ -30,6 +30,7 @@ urlpatterns = [
     path('seguradoras/<int:pk>/editar/', views.seguradora_editar, name='seguradora_editar'),
     path('seguradoras/<int:pk>/excluir/', views.seguradora_excluir, name='seguradora_excluir'),
     
+    
     # URLs para Produto
     path('produtos/', views_produto_pagamento.produto_lista, name='produto_lista'),
     path('produtos/novo/', views_produto_pagamento.produto_novo, name='produto_novo'),
