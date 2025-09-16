@@ -12,12 +12,13 @@
                     <h4 class="mb-0"><i class="fas fa-file-medical me-2"></i>Nova Apólice</h4>
                 </div>
                 <div class="card-body p-4">
-                    <!-- Exibir total de apolices -->
-                    <p class="text-muted">Total de apolices cadastradas: <strong>{{ total_apolices }}</strong></p>
+                    <!-- Exibir total de apólices -->
+                    <p class="text-muted">Total de apólices cadastradas: <strong>{{ total_apolices }}</strong></p>
 
                     <form method="POST">
                         {% csrf_token %}
-                        
+
+                        <!-- Número e Status -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 {{ form.numero|as_crispy_field }}
@@ -26,27 +27,25 @@
                                 {{ form.status|as_crispy_field }}
                             </div>
                         </div>
-                        
+
+                        <!-- Cliente e Produto -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 {{ form.cliente|as_crispy_field }}
                             </div>
                             <div class="col-md-6">
-<<<<<<< HEAD
                                 {{ form.produto|as_crispy_field }}
                             </div>
                         </div>
-                        
-=======
+                        <div class="row mb-4">
+                            <div class="col-md-6">
                                 {{ form.seguradora|as_crispy_field }}
                             </div>
-                            <div class="col-md-4">
-                                {{ form.protocolo|as_crispy_field }} 
-                            </div>
                             <div class="col-md-6">
-                                {{ form.produto|as_crispy_field }}
+                                {{ form.protocolo|as_crispy_field }}
                             </div>
                         </div>
+
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 {{ form.codigo_ci|as_crispy_field }}
@@ -54,8 +53,8 @@
                             <div class="col-md-6">
                                 {{ form.classificacao_bonus|as_crispy_field }}
                             </div>
-                        </div>                        
->>>>>>> b372def (Alterações_Duka)
+                        </div>
+                        <!-- Data Início e Data Fim -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 {{ form.data_inicio|as_crispy_field }}
@@ -64,7 +63,8 @@
                                 {{ form.data_fim|as_crispy_field }}
                             </div>
                         </div>
-                        
+                         
+                        <!-- Valores e Percentual -->
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 {{ form.valor_premio|as_crispy_field }}
@@ -75,18 +75,15 @@
                             <div class="col-md-4">
                                 {{ form.percentual_comissao|as_crispy_field }}
                             </div>
-<<<<<<< HEAD
                         </div>
-                        
-=======
-                        </div>                        
->>>>>>> b372def (Alterações_Duka)
+                        <!-- Observações -->
                         <div class="row mb-4">
                             <div class="col-md-12">
                                 {{ form.observacoes|as_crispy_field }}
                             </div>
                         </div>
-                        
+
+                        <!-- Botões -->
                         <div class="d-flex justify-content-end mt-4">
                             <a href="{% url 'apolice_lista' %}" class="btn btn-outline-secondary me-2">
                                 <i class="fas fa-times me-1"></i>Cancelar

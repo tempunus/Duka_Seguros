@@ -20,6 +20,7 @@ urlpatterns = [
     path('apolices/<int:pk>/editar/', views.apolice_editar, name='apolice_editar'),
     path('apolices/<int:pk>/excluir/', views.apolice_excluir, name='apolice_excluir'),
     path('apolices/pendentes/', views.apolices_pendentes, name='apolices_pendentes'),
+    path('apolices-renovacao/', views.apolices_renovacao, name='apolices_renovacao'),
 
     
     # URLs para Seguradora

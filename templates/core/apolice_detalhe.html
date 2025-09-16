@@ -17,6 +17,7 @@
     </div>
 
     <div class="row">
+        <!-- Informações do Cliente -->
         <div class="col-lg-8">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white">
@@ -66,6 +67,7 @@
                 </div>
             </div>
 
+            <!-- Informações da Apólice -->
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white">
                     <h5 class="mb-0">Informações da Apólice</h5>
@@ -77,11 +79,11 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-3 fw-bold">Produto:</div>
-                        <div class="col-md-9">{{ apolice.produto.nome }}</div>
+                        <div class="col-md-9">{{ apolice.get_produto_display|default:apolice.produto }}</div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-3 fw-bold">Seguradora:</div>
-                        <div class="col-md-9">{{ apolice.produto.seguradora.nome }}</div>
+                        <div class="col-md-9">{{ apolice.seguradora.nome }}</div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-3 fw-bold">Início da Vigência:</div>
@@ -94,12 +96,19 @@
                     <div class="row mb-3">
                         <div class="col-md-3 fw-bold">Status:</div>
                         <div class="col-md-9">
-                            {% if apolice.esta_ativa %}
-                                <span class="badge bg-success">Ativa</span>
+                            {% if apolice.status %}
+                                {% if apolice.status == "ATIVO" %}
+                                    <span class="badge bg-success">{{ apolice.get_status_display }}</span>
+                                {% elif apolice.status == "NÃO ATIVO" %}
+                                    <span class="badge bg-danger">{{ apolice.get_status_display }}</span>
+                                {% elif apolice.status == "PENDENTE" %}
+                                    <span class="badge bg-warning text-dark">{{ apolice.get_status_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ apolice.get_status_display }}</span>
+                                {% endif %}
                             {% else %}
-                                <span class="badge bg-danger">Inativa</span>
+                                <span class="badge bg-secondary">Sem Status</span>
                             {% endif %}
-
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -124,41 +133,36 @@
             </div>
         </div>
 
+        <!-- Outras Apólices do Cliente -->
         <div class="col-lg-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white">
                     <h5 class="mb-0">Outras Apólices do Cliente</h5>
                 </div>
                 <div class="card-body">
-                    {% with outras_apolices=apolice.cliente.apolice_set.all %}
+                    {% with outras_apolices=apolice.cliente.apolices.all %}
                     {% if outras_apolices|length > 1 %}
-                    <div class="list-group">
-                        {% for apolice_relacionada in outras_apolices %}
-                        {% if apolice_relacionada.id != apolice.id %}
-                        <a href="{% url 'apolice_detalhe' apolice_relacionada.id %}"
-                            class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">{{ apolice_relacionada.numero }}</h6>
-                                <small class="text-muted">
-                                    {% if apolice_relacionada.ativo %}
-                                    Ativa
-                                    {% else %}
-                                    Inativa
-                                    {% endif %}
-                                </small>
-                            </div>
-                            <p class="mb-1">{{ apolice_relacionada.produto.nome }}</p>
-                            <small>Vigência: {{ apolice_relacionada.data_inicio|date:"d/m/Y" }} a {{
-                                apolice_relacionada.data_fim|date:"d/m/Y" }}</small>
-                        </a>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
+                        <div class="list-group">
+                            {% for apolice_relacionada in outras_apolices %}
+                                {% if apolice_relacionada.id != apolice.id %}
+                                    <a href="{% url 'apolice_detalhe' apolice_relacionada.id %}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">{{ apolice_relacionada.numero }}</h6>
+                                            <small class="text-muted">
+                                                {{ apolice_relacionada.get_status_display }}
+                                            </small>
+                                        </div>
+                                        <p class="mb-1">{{ apolice_relacionada.get_produto_display|default:apolice_relacionada.produto }}</p>
+                                        <small>Vigência: {{ apolice_relacionada.data_inicio|date:"d/m/Y" }} a {{ apolice_relacionada.data_fim|date:"d/m/Y" }}</small>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     {% else %}
-                    <div class="text-center py-4">
-                        <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
-                        <p>Este cliente não possui outras apólices.</p>
-                    </div>
+                        <div class="text-center py-4">
+                            <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
+                            <p>Este cliente não possui outras apólices.</p>
+                        </div>
                     {% endif %}
                     {% endwith %}
                 </div>

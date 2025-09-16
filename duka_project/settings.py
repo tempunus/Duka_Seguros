@@ -1,26 +1,20 @@
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente, se necessário
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Caminho base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Segurança
 SECRET_KEY = 'django-insecure-duka-seguradora-2025-development-key'
+DEBUG = True  # Você pode usar os.getenv("DEBUG", "False") == "True" se quiser usar .env
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://dukaseguros.com', 'https://www.dukaseguros.com']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "True"
-#os.getenv("DEBUG", "False") ==
-ALLOWED_HOSTS = ['dukaseguros.com', 'www.dukaseguros.com']
-
-<<<<<<< HEAD
-=======
-CSRF_TRUSTED_ORIGINS = ["https://dukaseguros.com", "https://www.dukaseguros.com"]
-
->>>>>>> b372def (Alterações_Duka)
-# Application definition
+# Aplicativos
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,34 +22,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Bibliotecas de terceiros
     "crispy_forms",
     "crispy_bootstrap5",
     'django_bootstrap5',
     'django_filters',
-    # Aplicativos locais
+    'widget_tweaks',
+
+    # Apps locais
     'core',
     'accounts.apps.AccountsConfig',
-<<<<<<< HEAD
-=======
-    "widget_tweaks",
->>>>>>> b372def (Alterações_Duka)
 ]
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ⚠️ já está aqui na posição correta
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+# URL principal
 ROOT_URLCONF = 'duka_project.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -72,74 +67,57 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'duka_project.wsgi.application'
 
-# Database
+# ✅ BANCO DE DADOS (Corrigido)
 DATABASES = {
     'default': {
-<<<<<<< HEAD
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-=======
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dukaseguros_db_jrq5',      
-        'USER': 'admin',             
-        'PASSWORD': 'pZlPYGloETfx3aTbKYwsxuibjfwbZUmq',          
-        'HOST': 'dpg-d2n0p6ggjchc73d708c0-a.oregon-postgres.render.com',          
-        'PORT': '5432',  
+        'NAME': 'dukaseguros_db_jrq5',
+        'USER': 'admin',
+        'PASSWORD': 'pZlPYGloETfx3aTbKYwsxuibjfwbZUmq',
+        'HOST': 'dpg-d2n0p6ggjchc73d708c0-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
->>>>>>> b372def (Alterações_Duka)
-# Password validation
+# Validação de senha
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-
-# Internationalization
+# Internacionalização
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Arquivos estáticos e mídia
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
+# Campo padrão de ID
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-# Login URLs
+
+# Login e Logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
+# E-mail (console e SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -147,8 +125,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tempunus@gmail.com'
 EMAIL_HOST_PASSWORD = 'qltt vmds mhbk llcm'
 DEFAULT_FROM_EMAIL = 'Duka Seguros <tempunus@gmail.com>'
-
-ALLOWED_HOSTS = ['*']
-
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

@@ -12,10 +12,7 @@
     </div>
 
     <div class="row g-4 mb-5">
-<<<<<<< HEAD
-=======
-        <!-- Clientes -->
->>>>>>> b372def (Alterações_Duka)
+        <!-- Total Clientes -->
         <div class="col-md-3">
             <div class="card bg-primary text-white h-100">
                 <div class="card-body d-flex flex-column align-items-center">
@@ -28,19 +25,12 @@
                 </div>
             </div>
         </div>
-        
-<<<<<<< HEAD
-        <div class="col-md-3">
-            <div class="card bg-success text-white h-100">
-                <div class="card-body d-flex flex-column align-items-center">
-                    <i class="fas fa-users fa-3x mb-3"></i>
-=======
-        <!-- Apólices -->
+
+        <!-- Total Apólices -->
         <div class="col-md-3">
             <div class="card bg-success text-white h-100">
                 <div class="card-body d-flex flex-column align-items-center">
                     <i class="fas fa-file-medical fa-3x mb-3"></i>
->>>>>>> b372def (Alterações_Duka)
                     <h3 class="card-title">{{ total_apolices }}</h3>
                     <p class="card-text">Apólices</p>
                 </div>
@@ -50,28 +40,13 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-        <div class="col-md-3">
-            <div class="card bg-secondary text-white h-100">
-                <div class="card-body d-flex flex-column align-items-center">
-                    <i class="fas fa-users fa-3x mb-3"></i>
-                    <h3 class="card-title">{{ total_apolices }}</h3>
-                    <p class="card-text">Consórcio</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{% url 'consorcio_lista' %}" class="btn btn-outline-light btn-sm w-100">Ver Todas</a>
-                </div>
-            </div>
-        </div>
-        
-=======
-        <!-- Consórcio -->
+        <!-- Total Consórcios -->
         <div class="col-md-3">
             <div class="card bg-secondary text-white h-100">
                 <div class="card-body d-flex flex-column align-items-center">
                     <i class="fas fa-hand-holding-usd fa-3x mb-3"></i>
-                    <h3 class="card-title">{{ total_consorcio }}</h3>
-                    <p class="card-text">Consórcio</p>
+                    <h3 class="card-title">{{ total_consorcios }}</h3>
+                    <p class="card-text">Consórcios</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
                     <a href="{% url 'consorcio_lista' %}" class="btn btn-outline-light btn-sm w-100">Ver Todos</a>
@@ -79,8 +54,7 @@
             </div>
         </div>
 
-        <!-- Pendentes -->
->>>>>>> b372def (Alterações_Duka)
+        <!-- Apólices Pendentes -->
         <div class="col-md-3">
             <div class="card bg-warning text-dark h-100">
                 <div class="card-body d-flex flex-column align-items-center">
@@ -93,34 +67,23 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
-        
-=======
 
-        <!-- Renovações -->
->>>>>>> b372def (Alterações_Duka)
+        <!-- Vencimentos próximos -->
         <div class="col-md-3">
             <div class="card bg-info text-white h-100">
                 <div class="card-body d-flex flex-column align-items-center">
                     <i class="fas fa-calendar-alt fa-3x mb-3"></i>
                     <h3 class="card-title">{{ total_vencimentos }}</h3>
-<<<<<<< HEAD
-                    <p class="card-text">Vencimentos</p>
-=======
-                    <p class="card-text">Renovações (15 dias)</p>
->>>>>>> b372def (Alterações_Duka)
+                    <p class="card-text">Renovações Próximas</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="{% url 'pagamento_lista' %}?q=" class="btn btn-outline-light btn-sm w-100">Ver Vencimentos</a>
+                    <a href="{% url 'apolices_renovacao' %}?q=" class="btn btn-outline-light btn-sm w-100">Ver Renovações</a>
                 </div>
             </div>
         </div>
     </div>
 
-<<<<<<< HEAD
-=======
-    <!-- Atividades Recentes e Pagamentos Vencidos -->
->>>>>>> b372def (Alterações_Duka)
+    <!-- Atividades Recentes -->
     <div class="row">
         <div class="col-lg-8">
             <div class="card shadow-sm mb-4">
@@ -143,44 +106,10 @@
                     {% endif %}
                 </div>
             </div>
-<<<<<<< HEAD
         </div>
-        
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
-                <h5 class="card-title mb-0 text-danger">Pagamentos Vencidos Recentes</h5>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-sm mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Apólice</th>
-                            <th>Cliente</th>
-                            <th>Vencimento</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pagamento in pagamentos_vencidos %}
-                        <tr>
-                            <td>{{ pagamento.apolice.numero }}</td>
-                            <td>{{ pagamento.apolice.cliente.nome }}</td>
-                            <td>{{ pagamento.data_vencimento|date:"d/m/Y" }}</td>
-                            <td>
-                                <a href="{% url 'pagamento_detalhe' pagamento.pk %}"
-                                    class="btn btn-sm btn-outline-primary">Ver</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center text-muted">Sem vencimentos pendentes.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>  </div>
-=======
 
+        <!-- Pagamentos Vencidos -->
+        <div class="col-lg-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white">
                     <h5 class="card-title mb-0 text-danger">Pagamentos Vencidos Recentes</h5>
@@ -202,7 +131,8 @@
                                 <td>{{ pagamento.apolice.cliente.nome }}</td>
                                 <td>{{ pagamento.data_vencimento|date:"d/m/Y" }}</td>
                                 <td>
-                                    <a href="{% url 'pagamento_detalhe' pagamento.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                    <a href="{% url 'pagamento_detalhe' pagamento.pk %}"
+                                        class="btn btn-sm btn-outline-primary">Ver</a>
                                 </td>
                             </tr>
                             {% empty %}
@@ -212,39 +142,6 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ações Rápidas -->
->>>>>>> b372def (Alterações_Duka)
-        <div class="col-lg-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">Ações Rápidas</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'cliente_novo' %}" class="btn btn-primary">
-                            <i class="fas fa-user-plus me-2"></i>Novo Cliente
-                        </a>
-<<<<<<< HEAD
-                        <a href="#" class="btn btn-success">
-                            <i class="fas fa-file-medical me-2"></i>Nova Apólice
-                        </a>
-                        <a href="#" class="btn btn-secondary">
-                            <i class="fas fa-file-medical me-2"></i>Novo Consócio
-                        </a>
-                        
-=======
-                        <a href="{% url 'apolice_nova' %}" class="btn btn-success">
-                            <i class="fas fa-file-medical me-2"></i>Nova Apólice
-                        </a>
-                        <a href="{% url 'consorcio_novo' %}" class="btn btn-secondary">
-                            <i class="fas fa-file-medical me-2"></i>Novo Consórcio
-                        </a>
->>>>>>> b372def (Alterações_Duka)
-                    </div>
                 </div>
             </div>
         </div>
