@@ -191,3 +191,4 @@ class AdministradoraConsorcioForm(forms.ModelForm):
         cnpj = self.cleaned_data.get('cnpj')
         validar_cnpj(cnpj)
         return cnpj
+
