@@ -7,29 +7,26 @@ from django.utils import timezone
 from datetime import timedelta
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
+from .utils import registrar_atividade
 
 from .models import Cliente, Seguradora, Produto, Apolice, Pagamento, Consorcio, AdministradoraConsorcio, Atividade
 from .forms import ClienteForm, SeguradoraForm, ProdutoForm, ApoliceForm, PagamentoForm, ConsorcioForm, AdministradoraConsorcioForm
 from .filters import ApoliceFilter
 
+
 # -------------------- DASHBOARD --------------------
 @login_required
 def dashboard(request):
-    """Dashboard principal do sistema"""
-
-    # Contadores gerais
     total_clientes = Cliente.objects.filter(ativo=True).count()
     total_apolices = Apolice.objects.count()
     total_consorcios = Consorcio.objects.count()
     apolices_ativas = Apolice.objects.filter(status='ATIVA').count()
     apolices_pendentes = Apolice.objects.filter(status='PENDENTE').count()
 
-    # Apólices que vencem ou precisam ser renovadas nos próximos 15 dias
     hoje = timezone.now().date()
     limite = hoje + timedelta(days=15)
     total_vencimentos = Apolice.objects.filter(data_fim__range=(hoje, limite)).count()
 
-    # Atividades recentes
     atividades = Atividade.objects.filter(usuario=request.user).order_by('-data_hora')[:5]
 
     context = {
@@ -47,7 +44,6 @@ def dashboard(request):
 
 # -------------------- HOME --------------------
 def home(request):
-    """Página inicial do site"""
     return render(request, 'core/home.html')
 
 
@@ -85,6 +81,7 @@ def cliente_novo(request):
             cliente = form.save(commit=False)
             cliente.cadastrado_por = request.user
             cliente.save()
+            registrar_atividade(request.user, f'Cadastrou o cliente {cliente.nome}')
             messages.success(request, 'Cliente cadastrado com sucesso!')
             return redirect('cliente_detalhe', pk=cliente.pk)
     else:
@@ -101,6 +98,7 @@ def cliente_editar(request, pk):
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou o cliente {cliente.nome}')
             messages.success(request, 'Cliente atualizado com sucesso!')
             return redirect('cliente_detalhe', pk=cliente.pk)
     else:
@@ -114,7 +112,9 @@ def cliente_editar(request, pk):
 def cliente_excluir(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
     if request.method == 'POST':
+        nome = cliente.nome
         cliente.delete()
+        registrar_atividade(request.user, f'Excluiu o cliente {nome}')
         messages.success(request, 'Cliente excluído com sucesso!')
         return redirect('cliente_lista')
     return render(request, 'core/cliente_confirmar_exclusao.html', {'cliente': cliente})
@@ -134,15 +134,11 @@ def apolice_lista(request):
         )
 
     filtro = ApoliceFilter(request.GET, queryset=apolices)
-
     paginador = Paginator(filtro.qs, 10)
     page = request.GET.get('page')
     page_obj = paginador.get_page(page)
 
-    return render(request, 'core/apolice_lista.html', {
-        'apolices': page_obj,
-        'filter': filtro,
-    })
+    return render(request, 'core/apolice_lista.html', {'apolices': page_obj, 'filter': filtro})
 
 
 @login_required
@@ -160,6 +156,7 @@ def apolice_nova(request):
             apolice = form.save(commit=False)
             apolice.cadastrado_por = request.user
             apolice.save()
+            registrar_atividade(request.user, f'Cadastrou a apólice {apolice.numero}')
             messages.success(request, 'Apólice cadastrada com sucesso!')
             return redirect('apolice_detalhe', pk=apolice.pk)
     else:
@@ -175,15 +172,14 @@ def apolice_nova(request):
     total_apolices = Apolice.objects.count()
     return render(request, 'core/apolice_form.html', {'form': form, 'total_apolices': total_apolices})
 
+
 @login_required
 def apolices_renovacao(request):
-    """Lista de apólices que precisam ser renovadas nos próximos 15 dias"""
     hoje = timezone.now().date()
     limite = hoje + timedelta(days=15)
-    
     apolices = Apolice.objects.filter(data_fim__range=(hoje, limite)).order_by('data_fim')
-
     return render(request, 'core/apolices_renovacao.html', {'apolices': apolices})
+
 
 @login_required
 def apolice_editar(request, pk):
@@ -192,6 +188,7 @@ def apolice_editar(request, pk):
         form = ApoliceForm(request.POST, instance=apolice)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou a apólice {apolice.numero}')
             messages.success(request, 'Apólice atualizada com sucesso!')
             return redirect('apolice_detalhe', pk=apolice.pk)
     else:
@@ -205,7 +202,9 @@ def apolice_editar(request, pk):
 def apolice_excluir(request, pk):
     apolice = get_object_or_404(Apolice, pk=pk)
     if request.method == 'POST':
+        numero = apolice.numero
         apolice.delete()
+        registrar_atividade(request.user, f'Excluiu a apólice {numero}')
         messages.success(request, 'Apólice excluída com sucesso!')
         return redirect('apolice_lista')
     return render(request, 'core/apolice_confirmar_exclusao.html', {'apolice': apolice})
@@ -249,6 +248,7 @@ def seguradora_nova(request):
         form = SeguradoraForm(request.POST)
         if form.is_valid():
             seguradora = form.save()
+            registrar_atividade(request.user, f'Cadastrou a seguradora {seguradora.nome}')
             messages.success(request, 'Seguradora cadastrada com sucesso!')
             return redirect('seguradora_detalhe', pk=seguradora.pk)
     else:
@@ -263,6 +263,7 @@ def seguradora_editar(request, pk):
         form = SeguradoraForm(request.POST, instance=seguradora)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou a seguradora {seguradora.nome}')
             messages.success(request, 'Seguradora atualizada com sucesso!')
             return redirect('seguradora_detalhe', pk=seguradora.pk)
     else:
@@ -274,7 +275,9 @@ def seguradora_editar(request, pk):
 def seguradora_excluir(request, pk):
     seguradora = get_object_or_404(Seguradora, pk=pk)
     if request.method == 'POST':
+        nome = seguradora.nome
         seguradora.delete()
+        registrar_atividade(request.user, f'Excluiu a seguradora {nome}')
         messages.success(request, 'Seguradora excluída com sucesso!')
         return redirect('seguradora_lista')
     return render(request, 'core/seguradora_confirmar_exclusao.html', {'seguradora': seguradora})
@@ -301,6 +304,7 @@ def consorcio_novo(request):
             consorcio = form.save(commit=False)
             consorcio.cadastrado_por = request.user
             consorcio.save()
+            registrar_atividade(request.user, f'Cadastrou o consórcio {consorcio.nome}')
             messages.success(request, 'Consórcio cadastrado com sucesso!')
             return redirect('consorcio_detalhe', pk=consorcio.pk)
     else:
@@ -315,6 +319,7 @@ def consorcio_editar(request, pk):
         form = ConsorcioForm(request.POST, instance=consorcio)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou o consórcio {consorcio.nome}')
             messages.success(request, 'Consórcio atualizado com sucesso!')
             return redirect('consorcio_detalhe', pk=consorcio.pk)
     else:
@@ -326,7 +331,9 @@ def consorcio_editar(request, pk):
 def consorcio_excluir(request, pk):
     consorcio = get_object_or_404(Consorcio, pk=pk)
     if request.method == "POST":
+        nome = consorcio.nome
         consorcio.delete()
+        registrar_atividade(request.user, f'Excluiu o consórcio {nome}')
         messages.success(request, 'Consórcio excluído com sucesso!')
         return redirect('consorcio_lista')
     return render(request, 'core/consorcio_confirmar_exclusao.html', {'consorcio': consorcio})
@@ -338,7 +345,8 @@ def administradora_nova(request):
     if request.method == 'POST':
         form = AdministradoraConsorcioForm(request.POST)
         if form.is_valid():
-            form.save()
+            adm = form.save()
+            registrar_atividade(request.user, f'Cadastrou a administradora {adm.nome}')
             messages.success(request, 'Administradora de consórcio cadastrada com sucesso!')
             return redirect('administradora_lista')
     else:
@@ -359,6 +367,7 @@ def administradora_editar(request, pk):
         form = AdministradoraConsorcioForm(request.POST, instance=adm)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou a administradora {adm.nome}')
             messages.success(request, 'Administradora atualizada com sucesso!')
             return redirect('administradora_lista')
     else:
@@ -370,7 +379,9 @@ def administradora_editar(request, pk):
 def administradora_excluir(request, pk):
     adm = get_object_or_404(AdministradoraConsorcio, pk=pk)
     if request.method == 'POST':
+        nome = adm.nome
         adm.delete()
+        registrar_atividade(request.user, f'Excluiu a administradora {nome}')
         messages.success(request, 'Administradora excluída com sucesso!')
         return redirect('administradora_lista')
     return render(request, 'core/administradora_confirm_delete.html', {'adm': adm})
@@ -409,6 +420,7 @@ def produto_novo(request):
         form = ProdutoForm(request.POST)
         if form.is_valid():
             produto = form.save()
+            registrar_atividade(request.user, f'Cadastrou o produto {produto.nome}')
             messages.success(request, 'Produto cadastrado com sucesso!')
             return redirect('produto_lista')
     else:
@@ -423,6 +435,7 @@ def produto_editar(request, pk):
         form = ProdutoForm(request.POST, instance=produto)
         if form.is_valid():
             form.save()
+            registrar_atividade(request.user, f'Editou o produto {produto.nome}')
             messages.success(request, 'Produto atualizado com sucesso!')
             return redirect('produto_lista')
     else:
@@ -434,7 +447,9 @@ def produto_editar(request, pk):
 def produto_excluir(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
     if request.method == 'POST':
+        nome = produto.nome
         produto.delete()
+        registrar_atividade(request.user, f'Excluiu o produto {nome}')
         messages.success(request, 'Produto excluído com sucesso!')
         return redirect('produto_lista')
     return render(request, 'core/produto_confirmar_exclusao.html', {'produto': produto})
